@@ -22,6 +22,17 @@ public class Item implements Comparable<Item>
         this.quantidade = quantidade;
     }
 
+    public Item(Item i) throws Exception
+    {
+        if (i == null) throw new Exception("Item vazio.");
+
+        this.nome = i.nome;
+        this.descricao = i.descricao;
+        this.tipoEfeito = i.tipoEfeito;
+        this.forcaEfeito = i.forcaEfeito;
+        this.quantidade = i.quantidade;
+    }
+
     public String getNome() { return this.nome; }
     public String getDescricao() { return this.descricao; }
     public String getTipoEfeito() { return this.tipoEfeito; }
@@ -85,15 +96,12 @@ public class Item implements Comparable<Item>
     public int compareTo(Item i) {
         if (this == i) return 0;
 
-        return this.nome.compareTo(i.getNome());
-    }
+        int compNome = this.nome.compareTo(i.getNome());
+        if (compNome != 0) return compNome;
 
-    public Item(Item i) throws Exception
-    {
-        this.nome = i.nome;
-        this.descricao = i.descricao;
-        this.tipoEfeito = i.tipoEfeito;
-        this.forcaEfeito = i.forcaEfeito;
-        this.quantidade = i.quantidade;
+        int compEfeito = this.tipoEfeito.compareTo(i.getTipoEfeito());
+        if (compEfeito != 0) return compEfeito;
+
+        return (Integer.compare(this.forcaEfeito, i.getForcaEfeito()));
     }
 }
