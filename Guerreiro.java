@@ -7,7 +7,7 @@ public class Guerreiro extends Personagem {
     private static int DEFESA_BASE = 25;
 
     //aumento por nivel
-    private static double FATOR_VIDA = 0.10;   
+    private static double FATOR_VIDA = 0.15;   
     private static double FATOR_ATAQUE = 0.10; 
     private static double FATOR_DEFESA = 0.10; 
 
