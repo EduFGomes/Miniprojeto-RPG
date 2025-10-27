@@ -21,7 +21,7 @@ public class Mago extends Personagem {
     }
 
     //copia
-    public Mago(Mago outro) {
+    public Mago(Mago outro) throws Exception {
         super(outro);
         this.mana = outro.mana;
     }

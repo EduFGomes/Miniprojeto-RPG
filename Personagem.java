@@ -25,7 +25,7 @@ public class Personagem {
     }
 
     //Savepoint
-    public Personagem(Personagem outro) {
+    public Personagem(Personagem outro) throws Exception {
         this.nome = outro.nome; 
         this.pontosDeVidaMax = outro.pontosDeVidaMax; 
         this.pontosDeVida = outro.pontosDeVida;       

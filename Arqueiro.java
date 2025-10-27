@@ -21,7 +21,7 @@ public class Arqueiro extends Personagem {
     }
 
     //copia
-    public Arqueiro(Arqueiro outro) {
+    public Arqueiro(Arqueiro outro) throws Exception {
         super(outro);
         this.flechas = outro.flechas;
     }

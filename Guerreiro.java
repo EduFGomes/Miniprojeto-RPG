@@ -21,7 +21,7 @@ public class Guerreiro extends Personagem {
     }
     
     //copia
-    public Guerreiro(Guerreiro outro) {
+    public Guerreiro(Guerreiro outro) throws Exception {
         super(outro); 
         this.furia = outro.furia;
     }

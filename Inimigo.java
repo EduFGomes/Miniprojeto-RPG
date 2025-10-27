@@ -7,7 +7,7 @@ public class Inimigo extends Personagem {
     }
 
     //copia para as subclasses
-    public Inimigo(Inimigo outro) {
+    public Inimigo(Inimigo outro) throws Exception {
         super(outro); 
         this.tipo = outro.tipo;
     }
