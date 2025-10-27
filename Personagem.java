@@ -7,14 +7,22 @@ public class Personagem
     private byte nivel;
     private Inventario inventario;
 
-    public Personagem(nome, pontosDeVida, ataque, defesa, nivel, inventario) throws Exceptions
+    public Personagem(String nome,
+                      int pontosDeVida,
+                      int ataque,
+                      int defesa,
+                      byte nivel,
+                      Inventario inventario) throws Exception
     {
-        if (nome         == null ||
-            pontosDeVida == null ||
-            ataque       == null ||
-            defesa       == null ||
-            nivel        == null ||
-            inventario   == null) throw new Exception ("Um ou mais parâmetros inválidos.");
+        if (    (nome == null)      ||
+                (pontosDeVida <= 0) ||
+                (ataque <= 0)    ||
+                (defesa < 0)     ||
+                (nivel < 0)      ||
+                (inventario == null))
+        {
+            throw new Exception ("Um ou mais parâmetros inválidos.");
+        }
 
         this.nome = nome;
         this.pontosDeVida = pontosDeVida;
@@ -22,10 +30,5 @@ public class Personagem
         this.defesa = defesa;
         this.nivel = nivel;
         this.inventario = new Inventario(inventario);
-    }
-
-    public void morrer()
-    {
-
     }
 }
