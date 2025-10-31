@@ -84,6 +84,23 @@ public class Inventario implements Cloneable
         System.out.println("------------------");
     }
 
+    public void clonarEAdicionarItens(Inventario inventarioDoInimigo) throws Exception
+    {
+        if (inventarioDoInimigo == null || inventarioDoInimigo.itens.isEmpty())
+        {
+            System.out.println("O inimigo não tinha nada de valor.");
+            return;
+        }
+
+        Inventario inventarioClonado = inventarioDoInimigo.clone();
+
+        for (Item itemDoLoot : inventarioClonado.itens)
+        {
+            System.out.println("Você obteve: " + itemDoLoot.getNome() + " (x" + itemDoLoot.getQuantidade() + ")");
+            this.adicionarItem(itemDoLoot); // O método adicionarItem já agrupa os itens
+        }
+    }
+
     @Override
     public Inventario clone()
     {
