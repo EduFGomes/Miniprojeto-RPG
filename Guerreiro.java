@@ -2,9 +2,9 @@
 //parametro especifico: FURIA - aumenta quando leva dano 
 public class Guerreiro extends Personagem {
     // Atributos nivel 1
-    private static int VIDA_BASE = 200;
-    private static int ATAQUE_BASE = 30;
-    private static int DEFESA_BASE = 25;
+    private static int VIDA_BASE = 350;
+    private static int ATAQUE_BASE = 40;
+    private static int DEFESA_BASE = 30;
 
     //aumento por nivel
     private static double FATOR_VIDA = 0.15;   

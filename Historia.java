@@ -13,36 +13,35 @@ public class Historia {
     }
 
     public void iniciar() throws Exception {
-        System.out.println("✨=== BEM-VINDO AO RPG: A MALDIÇÃO DO VALE SOMBRIO ===✨");
+        System.out.println("=== BEM-VINDO AO RPG: A MALDIÇÃO DO VALE SOMBRIO ===");
         System.out.print("Qual é o seu nome, herói? ");
         String nome = entrada.nextLine();
 
-        // O Inventário é instanciado aqui, mas sem itens para evitar o erro "Item cannot be resolved".
         Inventario inventarioInicial = new Inventario(); 
+
+        try {
+            inventarioInicial.adicionarItem(new Item("Pocao de Cura", "Restaura 50 HP", "CURA", 50, 3));
+            inventarioInicial.adicionarItem(new Item("Bomba Pequena", "Causa 15 de dano ao inimigo", "DANO", 40, 1));
+        } catch (Exception e) {
+            System.err.println("Erro ao criar itens iniciais: " + e.getMessage());
+        }
         
-        // CORREÇÃO: Usamos nextInt() e precisamos limpar o buffer com nextLine()
         System.out.println("\nEscolha sua classe:");
-        System.out.println("1 - Guerreiro ⚔️");
-        System.out.println("2 - Arqueiro 🏹");
-        System.out.println("3 - Mago 🔮");
+        System.out.println("1 - Guerreiro");
+        System.out.println("2 - Arqueiro");
+        System.out.println("3 - Mago");
         System.out.print("Opção: ");
         int opcao = entrada.nextInt();
-        entrada.nextLine(); // Limpa o buffer após nextInt()
+        entrada.nextLine();
 
         switch (opcao) {
-            case 1:
-                heroi = new Guerreiro(nome, (byte) 1, inventarioInicial, 0);
-                break;
-            case 2:
-                heroi = new Arqueiro(nome, (byte) 1, inventarioInicial, 10);
-                break;
-            case 3:
-                heroi = new Mago(nome, (byte) 1, inventarioInicial, 50);
-                break;
-            default:
+            case 1 -> heroi = new Guerreiro(nome, (byte) 1, inventarioInicial, 0);
+            case 2 -> heroi = new Arqueiro(nome, (byte) 1, inventarioInicial, 10);
+            case 3 -> heroi = new Mago(nome, (byte) 1, inventarioInicial, 50);
+            default -> {
                 System.out.println("Classe inválida, você será um Guerreiro!");
                 heroi = new Guerreiro(nome, (byte) 1, inventarioInicial, 0);
-                break;
+            }
         }
 
         System.out.println("\nBem-vindo, " + heroi.getNome() + "!");
@@ -60,34 +59,34 @@ public class Historia {
         boolean explorando = true;
         while (explorando) {
             System.out.println("\n--- ONDE VOCÊ DESEJA PROSSEGUIR, " + heroi.getNome() + "? ---");
-            System.out.println("1. Entrar na Floresta Sombria (Cadeia de Batalhas Gigante -> Bruxa -> Dragão)");
-            System.out.println("2. Explorar Ruínas Antigas (Novo Destino!)");
+            System.out.println("1. Entrar na Floresta Sombria");
+            System.out.println("2. Explorar Ruínas Antigas");
             System.out.println("3. Ver Status do Herói");
-            System.out.println("4. Sair do Jogo");
+            System.out.println("4. Abrir Inventário");
+            System.out.println("5. Sair do Jogo");
             System.out.print("Escolha: ");
             
             // Usamos nextLine() e parseamos para int para maior segurança com o Scanner
             String escolhaDestino = entrada.nextLine().trim();
             
             switch (escolhaDestino) {
-                case "1":
+                case "1" -> {
                     introducao(); // Inicia a cadeia de batalhas original
                     explorando = false; // Termina o loop após o fim da cadeia
-                    break;
-                case "2":
-                    explorarRuinas();
-                    // Assumindo que o herói retorna ao menu após a exploração/batalha
-                    break; 
-                case "3":
-                    System.out.println("\n--- STATUS ATUAIS ---\n" + heroi.toString());
-                    break;
-                case "4":
+                }
+                case "2" -> explorarRuinas();
+                // Assumindo que o herói retorna ao menu após a exploração/batalha
+                case "3" -> System.out.println("\n--- STATUS ATUAIS ---\n" + heroi.toString());
+                case "4" -> {
+                    System.out.println("\n--- SEU INVENTÁRIO ---");
+                    heroi.getInventario().listarItems();
+                    pausar();
+                }
+                case "5" -> {
                     System.out.println("Aventura encerrada. O Vale Sombrio terá que esperar.");
                     explorando = false;
-                    break;
-                default:
-                    System.out.println("Opção inválida. Tente novamente.");
-                    break;
+                }
+                default -> System.out.println("Opção inválida. Tente novamente.");
             }
         }
     }
@@ -96,18 +95,23 @@ public class Historia {
     //              NOVO DESTINO - RUÍNAS
     // ===============================================
     private void explorarRuinas() throws Exception {
-        System.out.println("\n🏛️ Você chega às Ruínas Antigas. A atmosfera é pesada e silenciosa.");
+        System.out.println("\nVocê chega às Ruínas Antigas. A atmosfera é pesada e silenciosa.");
         pausar();
         System.out.println("Um Espírito Vingativo, guardião do local, surge à sua frente!");
         pausar();
         
-        // Exemplo de inimigo (pode ser qualquer subclasse de Inimigo)
         Inimigo fantasma = new Bruxa("Espírito Vingativo", (byte) 3, new Inventario()); 
         batalha(heroi, fantasma);
 
         if (heroi.getPontosDeVida() > 0) {
             System.out.println("\nO Espírito se dissipa. Você encontra um baú vazio, mas sente-se mais forte.");
-            // Poderia adicionar Level-up aqui ou um item.
+            try {
+                Item loot = new Item("Bomba Gigante", "Causa 100 de dano ao inimigo", "DANO", 100, 1);
+                heroi.getInventario().adicionarItem(loot);
+                System.out.println("Você obteve: " + loot.getNome() + "!");
+            } catch (Exception e) {
+                System.err.println("Erro ao adicionar loot: " + e.getMessage());
+            }
             heroi.setNivel((byte) (heroi.getNivel() + 1));
             System.out.println("🎉 " + heroi.getNome() + " subiu de nível!");
         } else {
@@ -120,7 +124,7 @@ public class Historia {
     // ===============================================
 
     private void introducao() throws Exception {
-        System.out.println("\n🌒 O sol se põe sobre o Vale Sombrio...");
+        System.out.println("\nO sol se põe sobre o Vale Sombrio...");
         System.out.println("Rumores dizem que uma Bruxa ancestral retornou, trazendo monstros e caos.");
         pausar();
 
@@ -132,6 +136,13 @@ public class Historia {
 
         if (heroi.getPontosDeVida() > 0) {
             System.out.println("\nO Gigante ruge e cai ao chão...");
+            try {
+                Item loot = new Item("Pocao de Cura", "Restaura 50 HP", "CURA", 50, 2);
+                heroi.getInventario().adicionarItem(loot);
+                System.out.println("O Gigante deixou cair uma " + loot.getNome() + "!");
+            } catch (Exception e) {
+                System.err.println("Erro ao adicionar loot: " + e.getMessage());
+            }
             pausar();
             encontroComBruxa();
         } else {
@@ -148,6 +159,13 @@ public class Historia {
 
         if (heroi.getPontosDeVida() > 0) {
             System.out.println("\nCom um grito, a Bruxa desaparece em fumaça — mas uma sombra surge nos céus...");
+            try {
+                Item loot = new Item("Pocao de Cura Maior", "Restaura 100 HP", "CURA", 100, 1);
+                heroi.getInventario().adicionarItem(loot);
+                System.out.println("A Bruxa deixou para trás uma " + loot.getNome() + "!");
+            } catch (Exception e) {
+                System.err.println("Erro ao adicionar loot: " + e.getMessage());
+            }
             pausar();
             confrontoFinal();
         } else {
@@ -156,7 +174,7 @@ public class Historia {
     }
 
     private void confrontoFinal() throws Exception {
-        System.out.println("\n🔥 O Dragão Ancião desce dos céus, cuspindo chamas sobre o vale!");
+        System.out.println("\nO Dragão Ancião desce dos céus, cuspindo chamas sobre o vale!");
         pausar();
 
         Inimigo dragao = new Dragao("Dragão Ancião", (byte) 5, new Inventario());
@@ -174,35 +192,45 @@ public class Historia {
     // ===============================================
 
     private void batalha(Personagem heroi, Personagem inimigo) {
-        System.out.println("\n⚔️ BATALHA INICIADA: " + heroi.getNome() + " VS " + inimigo.getNome());
+        System.out.println("\nBATALHA INICIADA: " + heroi.getNome() + " VS " + inimigo.getNome());
 
         while (heroi.getPontosDeVida() > 0 && inimigo.getPontosDeVida() > 0) {
             System.out.println("\nSeu HP: " + heroi.getPontosDeVida() + " | HP do inimigo: " + inimigo.getPontosDeVida());
             System.out.println("1 - Atacar");
             System.out.println("2 - Defender");
+            System.out.println("3 - Usar Item");
             System.out.print("Escolha sua ação: ");
             
-            // Lendo a ação como String e depois convertendo
             String acaoStr = entrada.nextLine().trim();
-            int acao = 0;
+            int acao;
             try {
                 acao = Integer.parseInt(acaoStr);
             } catch (NumberFormatException e) {
                 System.out.println("Ação inválida. Perdendo turno.");
                 pausar();
-                continue; // Pula para a próxima iteração do loop
+                continue;
             }
 
             int defesaOriginal = heroi.defesa;
 
-            if (acao == 1) {
-                inimigo.receberDano(heroi.ataque);
-                System.out.println("Você ataca " + inimigo.getNome() + "!");
-            } else if (acao == 2) {
-                System.out.println("Você se defende e aumenta a defesa temporariamente.");
-                heroi.defesa += 5;
-            } else {
-                System.out.println("Ação inválida. Perdendo turno.");
+            switch (acao) {
+                case 1 -> {
+                    inimigo.receberDano(heroi.ataque);
+                    System.out.println("Você ataca " + inimigo.getNome() + "!");
+                }
+                case 2 -> {
+                    System.out.println("Você se defende e aumenta a defesa temporariamente.");
+                    heroi.defesa += 5;
+                }
+                case 3 -> {
+                    boolean turnoUsado = usarItemEmBatalha(inimigo);
+                    if (!turnoUsado) {
+                        System.out.println("Voltando para a seleção de ação...");
+                        heroi.defesa = defesaOriginal;
+                        continue;
+                    }
+                }
+                default -> System.out.println("Ação inválida. Perdendo turno.");
             }
 
             if (inimigo.getPontosDeVida() > 0) {
@@ -210,7 +238,6 @@ public class Historia {
                 System.out.println(inimigo.getNome() + " contra-ataca!");
             }
             
-            // Restaura a defesa
             if (acao == 2) {
                 heroi.defesa = defesaOriginal;
             }
@@ -219,14 +246,52 @@ public class Historia {
         }
     }
 
+    private boolean usarItemEmBatalha(Personagem inimigo) {
+        System.out.println("\n--- INVENTÁRIO DE BATALHA ---");
+        heroi.getInventario().listarItems();
+        System.out.print("Digite o nome do item que deseja usar (ou 'cancelar'): ");
+        String nomeItem = entrada.nextLine();
+
+        if (nomeItem.equalsIgnoreCase("cancelar")) {
+            return false;
+        }
+
+        Item item = heroi.getInventario().buscarItem(nomeItem);
+
+        if (item == null) {
+            System.out.println("Item não encontrado.");
+            return false;
+        }
+
+        switch (item.getTipoEfeito()) {
+            case "CURA" -> {
+                int cura = item.getForcaEfeito();
+                heroi.setPontosDeVida(heroi.getPontosDeVida() + cura);
+                System.out.println("✨ " + heroi.getNome() + " usa " + item.getNome() + " e restaura " + cura + " HP.");
+                heroi.getInventario().usarItem(item);
+                return true;
+            }
+            case "DANO" -> {
+                int dano = item.getForcaEfeito();
+                inimigo.receberDano(dano);
+                heroi.getInventario().usarItem(item);
+                return true;
+            }
+            default -> {
+                System.out.println("O item '" + item.getNome() + "' não pode ser usado em batalha.");
+                return false;
+            }
+        }
+    }
+
     private void finalVitoria() {
-        System.out.println("\n🏆 Você derrotou o Dragão e libertou o vale da escuridão!");
+        System.out.println("\nVocê derrotou o Dragão e libertou o vale da escuridão!");
         System.out.println("A lenda do herói " + heroi.getNome() + " ecoará por gerações...");
-        System.out.println("\n✨ FIM DE JOGO - FINAL HEROICO ✨");
+        System.out.println("\nFIM DE JOGO - FINAL HEROICO");
     }
 
     private void finalDerrota() {
-        System.out.println("\n💀 Você caiu em batalha...");
+        System.out.println("\nVocê caiu em batalha...");
         System.out.println("Mas talvez um novo herói surja um dia para continuar sua jornada.");
         System.out.println("\n=== GAME OVER ===");
     }

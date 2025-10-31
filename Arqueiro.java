@@ -2,9 +2,9 @@
 public class Arqueiro extends Personagem {
 
     //atributos nivel 1
-    private static int VIDA_BASE = 140;
-    private static int ATAQUE_BASE = 35; 
-    private static int DEFESA_BASE = 15;
+    private static int VIDA_BASE = 250;
+    private static int ATAQUE_BASE = 50; 
+    private static int DEFESA_BASE = 10;
     
     //aumento por nivel
     private static double FATOR_VIDA = 0.10;   

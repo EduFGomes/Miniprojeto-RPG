@@ -1,8 +1,8 @@
 public class Bruxa extends Inimigo {
 
     private static int VIDA_FIXA = 300;
-    private static int ATAQUE_FIXO = 60;
-    private static int DEFESA_FIXA = 20;
+    private static int ATAQUE_FIXO = 40;
+    private static int DEFESA_FIXA = 15;
 
     public Bruxa(String nome, byte nivel, Inventario inventario) throws Exception {
         super(nome, VIDA_FIXA, ATAQUE_FIXO, DEFESA_FIXA, nivel, inventario, "Bruxa");

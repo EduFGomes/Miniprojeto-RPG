@@ -1,8 +1,8 @@
 public class Gigante extends Inimigo {
 
-    private static int VIDA_FIXA = 800;
-    private static int ATAQUE_FIXO = 45;
-    private static int DEFESA_FIXA = 60;
+    private static int VIDA_FIXA = 400;
+    private static int ATAQUE_FIXO = 30;
+    private static int DEFESA_FIXA = 20;
 
     public Gigante(String nome, byte nivel, Inventario inventario) throws Exception {
         super(nome, VIDA_FIXA, ATAQUE_FIXO, DEFESA_FIXA, nivel, inventario, "Gigante");

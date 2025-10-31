@@ -2,9 +2,9 @@
 public class Mago extends Personagem {
 
     //atributos nivel 1    
-    private static int VIDA_BASE = 120;
-    private static int ATAQUE_BASE = 45;
-    private static int DEFESA_BASE = 10;
+    private static int VIDA_BASE = 200;
+    private static int ATAQUE_BASE = 70;
+    private static int DEFESA_BASE = 5;
     
     //aumento por nivel
     private static double FATOR_VIDA = 0.10;   
